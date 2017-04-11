@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import TaggerTag from './TaggerTag'
+import TaggerCanvas from './TaggerCanvas'
 
 class Tagger extends React.Component {
   constructor(props) {
@@ -8,9 +8,14 @@ class Tagger extends React.Component {
 
     this.state = {
       activeTag: props.activeTag,
+      tags: props.initialTags,
     }
+  }
 
-    this.__adjustCanvas = this.__adjustCanvas.bind(this)
+  getChildContext() {
+    return {
+      setActiveTag: this.__setActiveTag.bind(this),
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -19,34 +24,19 @@ class Tagger extends React.Component {
     })
   }
 
-  componentWillMount() {
-    window.addEventListener('resize', this.__adjustCanvas)
-  }
-
-  componentDidMount() {
-    this.__adjustCanvas()
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.__adjustCanvas)
-  }
-
   render() {
-    const { imgSrc } = this.props
+    const { imgSrc, imgWidth, imgHeight } = this.props
+    const { tags, activeTag } = this.state
 
     return (
-      <div className="tagger" style={{ backgroundImage: `url(${imgSrc})` }} ref={n => this.el = n}
-        onLoad={console.log}
+      <div className="tagger" style={{ backgroundImage: `url(${imgSrc})` }}
+        ref={n => this.el = n} onLoad={console.log}
       >
-        <div className="tagger__canvas" ref={n => this.canvasEl = n} style={this.canvasStyles}>
-          {this.tags}
-        </div>
+        <TaggerCanvas tags={tags} activeTag={activeTag} imgWidth={imgWidth}
+          imgHeight={imgHeight}
+        />
       </div>
     )
-  }
-
-  __adjustCanvas() {
-    this.forceUpdate()
   }
 
   __setActiveTag(id) {
@@ -55,41 +45,18 @@ class Tagger extends React.Component {
     })
   }
 
-  get canvasStyles() {
-    if (!this.el) return {}
-
-    const minProportion = Math.min(
-      this.el.clientWidth / this.props.imgWidth,
-      this.el.clientHeight / this.props.imgHeight,
-    )
-    const width = this.props.imgWidth * minProportion
-    const height = this.props.imgHeight * minProportion
-    const left = (this.el.clientWidth - width) / 2
-    const top = (this.el.clientHeight - height) / 2
-
-    return { width, height, left, top }
-  }
-
-  get tags() {
-    const { tags } = this.props
-    const { activeTag } = this.state
-    
-    return tags.map(tag =>
-      <TaggerTag {...tag} key={tag.id}
-        isActive={tag.id === Number(activeTag)}
-        setActiveTag={this.__setActiveTag.bind(this)}
-      />
-    )
-  }
 }
 Tagger.propTypes = {
   activeTag: PropTypes.any,
   imgSrc: PropTypes.string.isRequired,
   imgWidth: PropTypes.number.isRequired,
   imgHeight: PropTypes.number.isRequired,
-  tags: PropTypes.array.isRequired,
+  initialTags: PropTypes.array.isRequired,
 }
 Tagger.defaultProps = {
+}
+Tagger.childContextTypes = {
+  setActiveTag: PropTypes.func.isRequired,
 }
 
 

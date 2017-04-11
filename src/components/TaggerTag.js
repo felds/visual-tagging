@@ -9,7 +9,8 @@ class TaggerTag extends React.Component {
   }
 
   __handleClick(e) {
-    const { id, setActiveTag } = this.props
+    const { id } = this.props
+    const { setActiveTag } = this.context
     setActiveTag(id)
   }
 
@@ -40,10 +41,12 @@ TaggerTag.propTypes = {
   y: PropTypes.number.isRequired,
   w: PropTypes.number.isRequired,
   h: PropTypes.number.isRequired,
-  setActiveTag: PropTypes.func.isRequired,
 }
 TaggerTag.defaultProps = {
   isActive: false,
+}
+TaggerTag.contextTypes = {
+  setActiveTag: PropTypes.func, // .isRequired,
 }
 
 
