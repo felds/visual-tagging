@@ -3,7 +3,14 @@ import PropTypes from 'prop-types'
 
 class Tag extends React.Component {
   render() {
-    return <div className={this.classes} style={this.styles} />
+    return <div className={this.classes}
+                style={this.styles}
+                onClick={this.__handleClick.bind(this)} />
+  }
+
+  __handleClick(e) {
+    const { id, setActiveTag } = this.props
+    setActiveTag(id)
   }
 
   get classes() {
@@ -33,6 +40,7 @@ Tag.propTypes = {
   y: PropTypes.number.isRequired,
   w: PropTypes.number.isRequired,
   h: PropTypes.number.isRequired,
+  setActiveTag: PropTypes.func.isRequired,
 }
 Tag.defaultProps = {
   isActive: false,

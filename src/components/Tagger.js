@@ -3,10 +3,20 @@ import PropTypes from 'prop-types'
 import Tag from './Tag'
 
 class Tagger extends React.Component {
-  constructor() {
+  constructor(props) {
     super()
 
+    this.state = {
+      activeTag: props.activeTag,
+    }
+
     this.__adjustCanvas = this.__adjustCanvas.bind(this)
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      activeTag: props.activeTag,
+    })
   }
 
   componentWillMount() {
@@ -39,6 +49,12 @@ class Tagger extends React.Component {
     this.forceUpdate()
   }
 
+  __setActiveTag(id) {
+    this.setState({
+      activeTag: id,
+    })
+  }
+
   get canvasStyles() {
     if (!this.rootEl) return {}
 
@@ -55,19 +71,25 @@ class Tagger extends React.Component {
   }
 
   get tags() {
-    const { tags, activeTag } = this.props
+    const { tags } = this.props
+    const { activeTag } = this.state
     
     return tags.map(tag =>
-      <Tag {...tag} key={tag.id} isActive={tag.id === activeTag} />
+      <Tag {...tag} key={tag.id}
+        isActive={tag.id === Number(activeTag)}
+        setActiveTag={this.__setActiveTag.bind(this)}
+      />
     )
   }
 }
 Tagger.propTypes = {
-  activeTag: PropTypes.number,
+  activeTag: PropTypes.any,
   imgSrc: PropTypes.string.isRequired,
   imgWidth: PropTypes.number.isRequired,
   imgHeight: PropTypes.number.isRequired,
   tags: PropTypes.array.isRequired,
+}
+Tagger.defaultProps = {
 }
 
 
