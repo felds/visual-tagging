@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Tag from './Tag'
+import TaggerTag from './TaggerTag'
 
 class Tagger extends React.Component {
   constructor(props) {
@@ -35,7 +35,7 @@ class Tagger extends React.Component {
     const { imgSrc } = this.props
 
     return (
-      <div className="tagger" style={{ backgroundImage: `url(${imgSrc})` }} ref={n => this.rootEl = n}
+      <div className="tagger" style={{ backgroundImage: `url(${imgSrc})` }} ref={n => this.el = n}
         onLoad={console.log}
       >
         <div className="tagger__canvas" ref={n => this.canvasEl = n} style={this.canvasStyles}>
@@ -56,16 +56,16 @@ class Tagger extends React.Component {
   }
 
   get canvasStyles() {
-    if (!this.rootEl) return {}
+    if (!this.el) return {}
 
     const minProportion = Math.min(
-      this.rootEl.clientWidth / this.props.imgWidth,
-      this.rootEl.clientHeight / this.props.imgHeight,
+      this.el.clientWidth / this.props.imgWidth,
+      this.el.clientHeight / this.props.imgHeight,
     )
     const width = this.props.imgWidth * minProportion
     const height = this.props.imgHeight * minProportion
-    const left = (this.rootEl.clientWidth - width) / 2
-    const top = (this.rootEl.clientHeight - height) / 2
+    const left = (this.el.clientWidth - width) / 2
+    const top = (this.el.clientHeight - height) / 2
 
     return { width, height, left, top }
   }
@@ -75,7 +75,7 @@ class Tagger extends React.Component {
     const { activeTag } = this.state
     
     return tags.map(tag =>
-      <Tag {...tag} key={tag.id}
+      <TaggerTag {...tag} key={tag.id}
         isActive={tag.id === Number(activeTag)}
         setActiveTag={this.__setActiveTag.bind(this)}
       />

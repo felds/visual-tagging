@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class Tag extends React.Component {
+class TaggerTag extends React.Component {
   render() {
     return <div className={this.classes}
                 style={this.styles}
@@ -33,7 +33,7 @@ class Tag extends React.Component {
     return { left, top, width, height }
   }
 }
-Tag.propTypes = {
+TaggerTag.propTypes = {
   isActive: PropTypes.bool,
   id: PropTypes.number.isRequired,
   x: PropTypes.number.isRequired,
@@ -42,9 +42,9 @@ Tag.propTypes = {
   h: PropTypes.number.isRequired,
   setActiveTag: PropTypes.func.isRequired,
 }
-Tag.defaultProps = {
+TaggerTag.defaultProps = {
   isActive: false,
 }
 
 
-export default Tag
+export default TaggerTag
