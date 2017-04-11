@@ -10,11 +10,12 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    margin: 0;
 }
 .container {
-    background: dimgray;
-    width: 60%;
-    height: 60%;
+    background: #fff;
+    width: 90%;
+    height: 90%;
 }
 #root {
     width: 100%;
@@ -34,8 +35,8 @@ body {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    /*display: flex;*/
 }
+
 .tagger__canvas {
     position: absolute;
 }
@@ -43,8 +44,9 @@ body {
 .tagger__tag {
     position: absolute;
     background: rgba(200, 0, 100, .1);
+    cursor: pointer;
 }
-.tagger__tag.tagger__tag--active {
+.tagger__tag--active {
     background: rgba(200, 0, 100, .2);
     outline: 2px solid rgba(200, 0, 100, .5);
 }

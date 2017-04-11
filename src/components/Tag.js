@@ -1,19 +1,42 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+class Tag extends React.Component {
+  render() {
+    return <div className={this.classes} style={this.styles} />
+  }
 
+  get classes() {
+    const classes = [ 'tagger__tag' ]
+    const { isActive } = this.props
 
+    if (isActive) classes.push('tagger__tag--active')
 
-const Tag = ({ x, y, w, h }) => (
-  <div className="tagger__tag" style={{
-    
-    left: (x * 100) + '%',
-    top: (y * 100) + '%',
-    width: (w * 100) + '%',
-    height: (h * 100) + '%',
+    return classes.join(' ')
+  }
 
-  }} />
-)
+  get styles() {
+    const { x, y, w, h } = this.props
+
+    const left = (x * 100) + '%'
+    const top = (y * 100) + '%'
+    const width = (w * 100) + '%'
+    const height = (h * 100) + '%'
+
+    return { left, top, width, height }
+  }
+}
+Tag.propTypes = {
+  isActive: PropTypes.bool,
+  id: PropTypes.number.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  w: PropTypes.number.isRequired,
+  h: PropTypes.number.isRequired,
+}
+Tag.defaultProps = {
+  isActive: false,
+}
 
 
 export default Tag

@@ -10,7 +10,7 @@ const config = {
   imgSrc: "image.jpg",
   imgWidth: 5760,
   imgHeight: 3840,
-  activeTag: 1,
+  activeTag: 2,
   tags: [
     { id: 1, x: .1, y: 0, w: .8, h: .5 },
     { id: 2, x: .2, y: .7, w: .6, h: .2 },

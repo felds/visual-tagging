@@ -55,12 +55,15 @@ class Tagger extends React.Component {
   }
 
   get tags() {
-    return this.props.tags.map((tag, i) =>
-      <Tag {...tag} key={i} />
+    const { tags, activeTag } = this.props
+    
+    return tags.map(tag =>
+      <Tag {...tag} key={tag.id} isActive={tag.id === activeTag} />
     )
   }
 }
 Tagger.propTypes = {
+  activeTag: PropTypes.number,
   imgSrc: PropTypes.string.isRequired,
   imgWidth: PropTypes.number.isRequired,
   imgHeight: PropTypes.number.isRequired,
