@@ -25,12 +25,12 @@ class TaggerTag extends React.Component {
     }
 
     get styles() {
-        const { x, y, w, h } = this.props
+        const { rect } = this.props
 
-        const left = (x * 100) + '%'
-        const top = (y * 100) + '%'
-        const width = (w * 100) + '%'
-        const height = (h * 100) + '%'
+        const left = (rect.x * 100) + '%'
+        const top = (rect.y * 100) + '%'
+        const width = (rect.w * 100) + '%'
+        const height = (rect.h * 100) + '%'
 
         return { left, top, width, height }
     }
@@ -38,10 +38,12 @@ class TaggerTag extends React.Component {
 TaggerTag.propTypes = {
     isActive: PropTypes.bool,
     id: PropTypes.number.isRequired,
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-    w: PropTypes.number.isRequired,
-    h: PropTypes.number.isRequired,
+    rect: PropTypes.shape({
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired,
+        w: PropTypes.number.isRequired,
+        h: PropTypes.number.isRequired,
+    }).isRequired,
 }
 TaggerTag.defaultProps = {
     isActive: false,
