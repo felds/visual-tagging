@@ -1,11 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Rect from '../utils/Rect'
+import { default as Rect, stylesFromRect } from '../utils/Rect'
 
 class TaggerTag extends React.Component {
     render() {
+        const { rect } = this.props
+
         return <div className={this.classes}
-            style={this.styles}
+            style={stylesFromRect(rect)}
             onClick={this.__handleClick.bind(this)}
         />
     }
@@ -24,21 +26,10 @@ class TaggerTag extends React.Component {
 
         return classes.join(' ')
     }
-
-    get styles() {
-        const { rect } = this.props
-
-        const left = (rect.x * 100) + '%'
-        const top = (rect.y * 100) + '%'
-        const width = (rect.w * 100) + '%'
-        const height = (rect.h * 100) + '%'
-
-        return { left, top, width, height }
-    }
 }
 TaggerTag.propTypes = {
     isActive: PropTypes.bool,
-    id: PropTypes.number.isRequired,
+    id: PropTypes.number,
     rect: PropTypes.instanceOf(Rect).isRequired,
 }
 TaggerTag.defaultProps = {
