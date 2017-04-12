@@ -39,14 +39,30 @@ body {
 
 .tagger__canvas {
     position: absolute;
+    cursor: crosshair;
 }
 
 .tagger__tag {
     position: absolute;
-    background: rgba(200, 0, 100, .1);
+    background: rgba(236, 13, 139, 0.33);
+    outline: 2px solid rgba(255, 255, 255, .5);
+    cursor: pointer;
+    transition: 250ms outline-color;
+}
+.tagger__tag:not(.tagger__tag--active):hover {
+    outline: 2px solid rgba(255, 255, 255, .66);
+}
+.tagger__tag--active {
+    background: rgba(236, 13, 139, .45);
+    outline: 2px solid #ffffff;
+}
+
+/*.tagger__tag {
+    position: absolute;
+    background: rgba(236, 13, 139, 0.33);
     cursor: pointer;
 }
 .tagger__tag--active {
-    background: rgba(200, 0, 100, .2);
-    outline: 2px solid rgba(200, 0, 100, .5);
-}
+    background: rgba(236, 13, 139, .45);
+    outline: 2px solid #ec0d8b;
+}*/

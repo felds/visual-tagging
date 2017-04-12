@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import TaggerTag from './TaggerTag'
+import { compareRectsSize } from '../utils/Rect'
 
 
 class TaggerCanvas extends React.Component {
@@ -44,9 +45,12 @@ class TaggerCanvas extends React.Component {
     get tags() {
         const { tags, activeTag } = this.props
 
-        return tags.map(tag =>
-            <TaggerTag {...tag} key={tag.id} isActive={tag.id === Number(activeTag)} />
-        )
+        return tags
+            .sort((a, b) => compareRectsSize(a.rect, b.rect))
+            .reverse()
+            .map(tag =>
+                <TaggerTag {...tag} key={tag.id} isActive={tag.id === Number(activeTag)} />
+            )
     }
 
     get style() {

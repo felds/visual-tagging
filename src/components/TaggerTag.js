@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Rect from '../utils/Rect'
 
 class TaggerTag extends React.Component {
     render() {
@@ -38,12 +39,7 @@ class TaggerTag extends React.Component {
 TaggerTag.propTypes = {
     isActive: PropTypes.bool,
     id: PropTypes.number.isRequired,
-    rect: PropTypes.shape({
-        x: PropTypes.number.isRequired,
-        y: PropTypes.number.isRequired,
-        w: PropTypes.number.isRequired,
-        h: PropTypes.number.isRequired,
-    }).isRequired,
+    rect: PropTypes.instanceOf(Rect).isRequired,
 }
 TaggerTag.defaultProps = {
     isActive: false,
