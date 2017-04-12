@@ -6,25 +6,26 @@ import './index.css'
 // Components
 import Tagger from './components/Tagger'
 
-const imgDark = {
-    imgSrc: "//unsplash.com/photos/BmsmOjGQegU/download",
-    imgWidth: 3648,
-    imgHeight: 5472,
+const imgs = {
+    dark: {
+        imgSrc: "//unsplash.com/photos/BmsmOjGQegU/download",
+        imgWidth: 3648,
+        imgHeight: 5472,
+    },
+    light: {
+        imgSrc: "//unsplash.com/photos/lcZ9NxhOSlo/download",
+        imgWidth: 5130,
+        imgHeight: 3840,
+    },
+    colors: {
+        imgSrc: "//unsplash.com/photos/x4sQx9iUMBI/download",
+        imgWidth: 6000,
+        imgHeight: 4000,
+    },
 }
-const imgLight = {
-    imgSrc: "//unsplash.com/photos/lcZ9NxhOSlo/download",
-    imgWidth: 5130,
-    imgHeight: 3840,
-}
-const imgColorful = {
-    imgSrc: "//unsplash.com/photos/x4sQx9iUMBI/download",
-    imgWidth: 6000,
-    imgHeight: 4000,
-}
-
 
 const config = {
-    ...imgDark,
+    ...imgs.dark,
     initialTags: [
         {
             id: 1,
