@@ -25,7 +25,7 @@ const imgs = {
 }
 
 const config = {
-    ...imgs.dark,
+    ...imgs.light,
     initialTags: [
         {
             id: 1,

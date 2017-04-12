@@ -45,24 +45,18 @@ body {
 .tagger__tag {
     position: absolute;
     background: rgba(236, 13, 139, 0.33);
-    outline: 2px solid rgba(255, 255, 255, .5);
+    border: 2px solid rgba(255, 255, 255, .5);
     cursor: pointer;
-    transition: 250ms outline-color;
+    transition: 250ms border-color;
 }
 .tagger__tag:not(.tagger__tag--active):hover {
-    outline: 2px solid rgba(255, 255, 255, .66);
+    border: 2px solid rgba(255, 255, 255, .66);
 }
 .tagger__tag--active {
     background: rgba(236, 13, 139, .45);
-    outline: 2px solid #ffffff;
+    border: 2px solid #ffffff;
 }
-
-/*.tagger__tag {
-    position: absolute;
-    background: rgba(236, 13, 139, 0.33);
-    cursor: pointer;
+.tagger__tag--draft {
+    background: rgba(204, 255, 0, .45);
+    border: 2px solid #ffffff;
 }
-.tagger__tag--active {
-    background: rgba(236, 13, 139, .45);
-    outline: 2px solid #ec0d8b;
-}*/

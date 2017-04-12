@@ -1,16 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import TaggerTag from './TaggerTag'
-import { default as Rect, compareRectsSize } from '../utils/Rect'
-
-
-const relativeCoords = (e) => {
-    const elRects = e.target.getBoundingClientRect()
-    const x = (e.clientX - elRects.left) / elRects.width
-    const y = (e.clientY - elRects.top) / elRects.height
-
-    return { x, y }
-}
+import { relativeEventCoordsFromElement } from '../utils'
+import { compareRectsSize, rectFromCoordPairs } from '../utils/Rect'
 
 
 class TaggerCanvas extends React.Component {
@@ -18,7 +10,7 @@ class TaggerCanvas extends React.Component {
         super()
         
         this.state = {
-            draftTag: undefined,
+            isDrawing: false,
         }
 
         this.__adjustCanvas = this.__adjustCanvas.bind(this)
@@ -66,18 +58,33 @@ class TaggerCanvas extends React.Component {
 
     __handleMouseDown(e) {
         // start new tag
-        const coords = relativeCoords(e)
-        this.setState({
-            draftTag: new Rect(coords.x, coords.y, 0, 0),
+        const coords = relativeEventCoordsFromElement(e, this.el)
+        this.setState(prevState => {
+            return {
+                isDrawing: true,
+                drawingStart: coords,
+                drawingEnd: false,
+            }
         })
     }
     __handleWindowMouseMove(e) {
-        // resize the new tag
+        // resize tag
+        const coords = relativeEventCoordsFromElement(e, this.el)
+        this.setState(prevState => {
+            return {
+                drawingEnd: prevState.isDrawing ? coords : prevState.drawingEnd,
+            }
+        })
     }
     __handleWindowMouseUp(e) {
         // add tag to collection
-        this.setState({
-            draftTag: undefined,
+        this.setState(prevState => {
+            const keep = prevState.drawingStart !== prevState.drawingEnd
+            return {
+                isDrawing: false,
+                drawingStart: keep && prevState.drawingStart,
+                drawingEnd: keep && prevState.drawingEnd,
+            }
         })
     }
 
@@ -90,12 +97,13 @@ class TaggerCanvas extends React.Component {
             .map(tag =>
                 <TaggerTag {...tag} key={tag.id} isActive={tag.id === Number(activeTag)} />
             ).concat([
-                this.state.draftTag && <TaggerTag key="new" rect={this.state.draftTag} />
+                this.draftTagRect && <TaggerTag key="draft" isDraft rect={this.draftTagRect} />
             ])
     }
 
     get style() {
         if (!this.el) return {}
+
         const el = this.el
         const parent = el.parentElement
 
@@ -109,6 +117,13 @@ class TaggerCanvas extends React.Component {
         const top = (parent.clientHeight - height) / 2
 
         return { width, height, left, top }
+    }
+
+    get draftTagRect() {
+        const { drawingStart, drawingEnd } = this.state
+
+        return (drawingStart && drawingEnd) &&
+            rectFromCoordPairs(drawingStart, drawingEnd)
     }
 }
 TaggerCanvas.propTypes = {
