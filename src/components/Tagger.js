@@ -12,12 +12,6 @@ class Tagger extends React.Component {
         }
     }
 
-    getChildContext() {
-        return {
-            setActiveTag: this.__setActiveTag.bind(this),
-        }
-    }
-
     componentWillReceiveProps(props) {
         this.setState({
             activeTag: props.activeTag,
@@ -32,8 +26,11 @@ class Tagger extends React.Component {
             <div className="tagger" style={{ backgroundImage: `url(${imgSrc})` }}
                 ref={n => this.el = n}
             >
-                <TaggerCanvas tags={tags} activeTag={activeTag} imgWidth={imgWidth}
+                <TaggerCanvas tags={tags}
+                    imgWidth={imgWidth}
                     imgHeight={imgHeight}
+                    activeTag={activeTag}
+                    setActiveTag={this.__setActiveTag.bind(this)}
                 />
             </div>
         )
@@ -44,7 +41,6 @@ class Tagger extends React.Component {
             activeTag: id,
         })
     }
-
 }
 Tagger.propTypes = {
     activeTag: PropTypes.any,
@@ -54,9 +50,6 @@ Tagger.propTypes = {
     initialTags: PropTypes.array.isRequired,
 }
 Tagger.defaultProps = {
-}
-Tagger.childContextTypes = {
-    setActiveTag: PropTypes.func.isRequired,
 }
 
 

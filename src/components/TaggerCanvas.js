@@ -5,6 +5,7 @@ import { relativeEventCoordsFromElement } from '../utils'
 import { compareRectsSize, rectFromCoordPairs } from '../utils/Rect'
 import { distance } from '../utils/Vector'
 
+
 class TaggerCanvas extends React.Component {
     constructor() {
         super()
@@ -25,6 +26,7 @@ class TaggerCanvas extends React.Component {
                 onMouseDown={this.__handleMouseDown.bind(this)}
             >
                 {this.tags}
+                {this.draftTagRect && <TaggerTag isDraft rect={this.draftTagRect} />}
             </div>
         )
     }
@@ -36,6 +38,7 @@ class TaggerCanvas extends React.Component {
     }
 
     componentDidMount() {
+        // calculate canvas size and position when injected into the DOM
         this.__adjustCanvas()
     }
 
@@ -52,7 +55,7 @@ class TaggerCanvas extends React.Component {
     __handleClick(e) {
         // unselect tags
         if (e.target !== e.currentTarget) return
-        const { setActiveTag } = this.context
+        const { setActiveTag } = this.props
         setActiveTag(undefined)
     }
 
@@ -77,11 +80,13 @@ class TaggerCanvas extends React.Component {
         })
     }
     __handleWindowMouseUp(e) {
+        // unselect active tag
+        const { setActiveTag } = this.props
+        setActiveTag(undefined)
+
         // add tag to collection
         this.setState(prevState => {
             const keep = distance(prevState.drawingStart, prevState.drawingEnd) > 0.01 
-            if (keep) this.context.setActiveTag(undefined)
-            
             return {
                 isDrawing: false,
                 drawingStart: keep && prevState.drawingStart,
@@ -91,19 +96,29 @@ class TaggerCanvas extends React.Component {
     }
 
     get tags() {
-        const { tags, activeTag } = this.props
         const { draftTagRect } = this
-
+        const { tags, activeTag, setActiveTag } = this.props
+        
         return tags
             .sort((a, b) => compareRectsSize(a.rect, b.rect))
             .reverse()
             .map(tag =>
-                <TaggerTag {...tag} key={tag.id} isActive={!draftTagRect && tag.id === activeTag} />
-            ).concat([
-                draftTagRect && <TaggerTag key="draft" isDraft rect={draftTagRect} />
-            ])
+                <TaggerTag {...tag} key={tag.id} isActive={tag.id === activeTag}
+                    setActiveTag={draftTagRect ? undefined : setActiveTag}
+                />
+            )
+            //                                                                 @TODO  draft tag shouldn't come from the loop
+            
+            // .concat([
+            //     
+            // ])
     }
 
+    /**
+     * Calculate the current size and position of the canvas
+     * 
+     * @return Object
+     */
     get style() {
         if (!this.el) return {}
 
@@ -122,6 +137,11 @@ class TaggerCanvas extends React.Component {
         return { width, height, left, top }
     }
 
+    /**
+     * Create a new Rect from the starting and ending drawing coords
+     * 
+     * @return Rect
+     */
     get draftTagRect() {
         const { drawingStart, drawingEnd } = this.state
 
@@ -132,9 +152,6 @@ class TaggerCanvas extends React.Component {
 TaggerCanvas.propTypes = {
     activeTag: PropTypes.any,
     tags: PropTypes.array.isRequired,
-}
-TaggerCanvas.contextTypes = {
-    setActiveTag: PropTypes.func.isRequired,
 }
 
 
