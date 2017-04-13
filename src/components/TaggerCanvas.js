@@ -87,6 +87,7 @@ class TaggerCanvas extends React.Component {
         // add tag to collection
         this.setState(prevState => {
             const keep = distance(prevState.drawingStart, prevState.drawingEnd) > 0.01 
+            // @TODO use pixels
             return {
                 isDrawing: false,
                 drawingStart: keep && prevState.drawingStart,
