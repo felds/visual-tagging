@@ -30,7 +30,7 @@ class Tagger extends React.Component {
 
         return (
             <div className="tagger" style={{ backgroundImage: `url(${imgSrc})` }}
-                ref={n => this.el = n} onLoad={console.log}
+                ref={n => this.el = n}
             >
                 <TaggerCanvas tags={tags} activeTag={activeTag} imgWidth={imgWidth}
                     imgHeight={imgHeight}

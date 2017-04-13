@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import TaggerTag from './TaggerTag'
 import { relativeEventCoordsFromElement } from '../utils'
 import { compareRectsSize, rectFromCoordPairs } from '../utils/Rect'
-
+import { distance } from '../utils/Vector'
 
 class TaggerCanvas extends React.Component {
     constructor() {
@@ -79,7 +79,9 @@ class TaggerCanvas extends React.Component {
     __handleWindowMouseUp(e) {
         // add tag to collection
         this.setState(prevState => {
-            const keep = prevState.drawingStart !== prevState.drawingEnd
+            const keep = distance(prevState.drawingStart, prevState.drawingEnd) > 0.01 
+            if (keep) this.context.setActiveTag(undefined)
+            
             return {
                 isDrawing: false,
                 drawingStart: keep && prevState.drawingStart,
@@ -90,14 +92,15 @@ class TaggerCanvas extends React.Component {
 
     get tags() {
         const { tags, activeTag } = this.props
+        const { draftTagRect } = this
 
         return tags
             .sort((a, b) => compareRectsSize(a.rect, b.rect))
             .reverse()
             .map(tag =>
-                <TaggerTag {...tag} key={tag.id} isActive={tag.id === Number(activeTag)} />
+                <TaggerTag {...tag} key={tag.id} isActive={!draftTagRect && tag.id === activeTag} />
             ).concat([
-                this.draftTagRect && <TaggerTag key="draft" isDraft rect={this.draftTagRect} />
+                draftTagRect && <TaggerTag key="draft" isDraft rect={draftTagRect} />
             ])
     }
 
